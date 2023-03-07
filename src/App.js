@@ -12,6 +12,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={ <CompanyList /> } />
           <Route path="/companyForm" element={ <CompanyForm /> } />
+          <Route path="/updateCompany/:id" element={ <CompanyForm /> } />
+
         </Routes>  
       </div>
     </BrowserRouter>

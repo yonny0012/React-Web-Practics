@@ -27,7 +27,7 @@ const CompanyList = ()=>{
         companies.map(
           (company)=>
             // <h2>{company.id}</h2>
-            <CompanyItem  key={company.id} company={company}/>
+            <CompanyItem  key={company.id} company={company} listCompanies={listCompanies} />
         )
       } 
         

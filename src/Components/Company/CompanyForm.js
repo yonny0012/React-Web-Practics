@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as CompanyServer from "./CompanyServer";
-import { useNavigate } from "react-router"
+import { useNavigate, useParams } from "react-router"
 
 const CompanyForm = ()=>{
   
   const history = useNavigate();
+  const params = useParams();
   const initialState = {id:0,name:"",fundation:1980,website:""};
   const [company, setCompany] = useState(initialState);
+
+  console.log(params);
 
   const handleInpuChange = (e)=>{
     setCompany({...company, [e.target.name]: e.target.value});
@@ -15,16 +18,35 @@ const CompanyForm = ()=>{
     e.preventDefault();
     try {
       let res;
-      res = await CompanyServer.registerCompany(company);
-      const data = res.json();
-      console.log(data);
+      if(!params.id){
+        res = await CompanyServer.registerCompany(company);
+        const data = res.json();
+        console.log(data);
+      }else{
 
+      }
       history("/");
     } catch (error) {
       alert(error);      
     }
   };
-
+  const getCompany = async (companyID)=>{
+    try {
+      const res = await CompanyServer.getCompany(companyID);
+      const data = await res.json();
+      const {name, fundation, website} = data;
+      setCompany({name, fundation, website});
+      
+    } catch (error) {
+      alert(error)
+    }
+  };
+  useEffect(()=>{
+    if(params.id){
+      getCompany(params.id);
+    }
+    // eslint-disable-next-line
+  },[]);
   return(
     <div id="forms-container" className="container text-bg-dark">
       <h2 className="mb-3 text-center">Company</h2>
@@ -41,7 +63,18 @@ const CompanyForm = ()=>{
           <label className="form-label">Website</label>
           <input type="url" name="website" value={company.website} onChange={handleInpuChange} className="form-control"  maxLength="100" placeholder="https://www.example.com/"/>
         </div>
-        <button type="submit" className="btn btn-block btn-success text-center">Registrer</button>
+          {
+            params.id?(
+              <button type="submit" className="btn btn-block btn-primary">
+                Update
+              </button>
+            ):(
+              <button type="submit" className="btn btn-block btn-success">
+                Register
+              </button>
+            )
+          }
+        
       </form>
     </div>
   );
