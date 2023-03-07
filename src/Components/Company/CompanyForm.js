@@ -1,8 +1,10 @@
 import { useState } from "react";
 import * as CompanyServer from "./CompanyServer";
+import { useNavigate } from "react-router"
 
 const CompanyForm = ()=>{
   
+  const history = useNavigate();
   const initialState = {id:0,name:"",fundation:1980,website:""};
   const [company, setCompany] = useState(initialState);
 
@@ -16,13 +18,15 @@ const CompanyForm = ()=>{
       res = await CompanyServer.registerCompany(company);
       const data = res.json();
       console.log(data);
+
+      history("/");
     } catch (error) {
       alert(error);      
     }
   };
 
   return(
-    <div id="forms-container" className="text-bg-dark col-md-3 mx-auto">
+    <div id="forms-container" className="container text-bg-dark">
       <h2 className="mb-3 text-center">Company</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
