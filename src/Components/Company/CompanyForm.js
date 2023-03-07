@@ -15,6 +15,7 @@ const CompanyForm = ()=>{
       let res;
       res = await CompanyServer.registerCompany(company);
       const data = res.json();
+      console.log(data);
     } catch (error) {
       alert(error);      
     }
