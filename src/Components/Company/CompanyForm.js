@@ -21,9 +21,11 @@ const CompanyForm = ()=>{
       if(!params.id){
         res = await CompanyServer.registerCompany(company);
         const data = res.json();
-        console.log(data);
+        if(data.ok){
+          setCompany(initialState);
+        }
       }else{
-
+        await CompanyServer.updateCompany(params.id, company);
       }
       history("/");
     } catch (error) {
